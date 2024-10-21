@@ -7,10 +7,8 @@ function Header() {
     <header className="header">
 
       <Logo />
-      <h1>💉Farmácia💉</h1>
 
-      <img src="/img/farmarcia-logo-pequena.png" alt="Logo da Farmácia" className="logo" />
-      <h1>💉Farmácia Nova Direção💉hhhhhh</h1>
+      <h1>💗Farmácia Nova Direção💗</h1>
 
     </header>
   );

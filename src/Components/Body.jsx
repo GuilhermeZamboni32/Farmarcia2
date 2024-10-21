@@ -1,8 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BiPlusMedical } from "react-icons/bi";
 import Contato from './Contato'; 
 
-function Home({ fila, gerarSenha, atender }) {
+function Body() {
+  const [filaNormal, setFilaNormal] = useState([]);
+  const [filaPreferencial, setFilaPreferencial] = useState([])
+  const [contadorNormal, setContadorNormal] = useState(1)
+  const [contadorPreferencial, setContadorPreferencial] = useState(1)
+
+
+  const gerarSenhaNormal = () => {
+    const novaSenha = { numero: contadorNormal, tipo: 'Normal' }
+    setFilaNormal([...filaNormal, novaSenha])
+    setContadorNormal(contadorNormal + 1)
+  };
+
+  
+  const gerarSenhaPreferencial = () => {
+    const novaSenha = { numero: contadorPreferencial, tipo: 'Preferencial' }
+    setFilaPreferencial([...filaPreferencial, novaSenha])
+    setContadorPreferencial(contadorPreferencial + 1)
+  };
+
+ 
+  const atender = () => {
+    if (filaPreferencial.length > 0) {
+      const novaFilaPreferencial = filaPreferencial.slice(1)
+      setFilaPreferencial(novaFilaPreferencial)
+    } else if (filaNormal.length > 0) {
+      const novaFilaNormal = filaNormal.slice(1)
+      setFilaNormal(novaFilaNormal)
+    }
+  };
+
   return (
     <main className="body-content">
       <div className="sections-container">
@@ -33,19 +63,32 @@ function Home({ fila, gerarSenha, atender }) {
 
           <div className="senha">
             <h2>Gestão de Senhas</h2>
-            <button onClick={gerarSenha}>Gerar Senha Normal</button>
+            <button onClick={gerarSenhaNormal}>Gerar Senha Normal</button>
+            <button onClick={gerarSenhaPreferencial}>Gerar Senha Preferencial</button>
             <button onClick={atender}>Atender</button>
 
-            <h3>Fila de Espera:</h3>
-            {fila.length > 0 ? (
-              fila.map((senha) => (
-                <div key={senha.numero}>
+            <h3>Fila de Espera Preferencial:</h3>
+            {filaPreferencial.length > 0 ? (
+              filaPreferencial.map((senha, index) => (
+                <div key={index}>
+                  <p>SENHA PREFERENCIAL: {senha.numero}</p>
+                  <p>Tipo: {senha.tipo}</p>
+                </div>
+              ))
+            ) : (
+              <p>Nenhuma senha preferencial na fila.</p>
+            )}
+
+            <h3>Fila de Espera Normal:</h3>
+            {filaNormal.length > 0 ? (
+              filaNormal.map((senha, index) => (
+                <div key={index}>
                   <p>SENHA: {senha.numero}</p>
                   <p>Tipo: {senha.tipo}</p>
                 </div>
               ))
             ) : (
-              <p>Nenhuma senha na fila.</p>
+              <p>Nenhuma senha normal na fila.</p>
             )}
           </div>
 
@@ -60,7 +103,7 @@ function Home({ fila, gerarSenha, atender }) {
         <Contato /> 
       </div>
     </main>
-  )
+  );
 }
 
-export default Home;
+export default Body;
